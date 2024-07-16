@@ -48,6 +48,7 @@ def model_processing(train_domain, lbl):
 
     train_images /= 255.0
 
+    # layer processing
     model = keras.Sequential([keras.layers.Flatten(input_shape=(100, 100)),
                               keras.layers.Dense(128, activation=tf.nn.sigmoid),
                               keras.layers.Dense(16, activation=tf.nn.sigmoid),
