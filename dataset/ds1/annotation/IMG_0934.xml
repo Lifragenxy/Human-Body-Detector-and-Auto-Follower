@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>IMG_0934.jpg</filename>
+	<path>C:\Users\zhaoz\Desktop\Human-Body-Detector-and-Auto-Follower-main\dataset\ds1\images\IMG_0934.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1625</width>
+		<height>1625</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>human</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>752</xmin>
+			<ymin>753</ymin>
+			<xmax>803</xmax>
+			<ymax>857</ymax>
+		</bndbox>
+	</object>
+</annotation>
