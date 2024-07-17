@@ -25,4 +25,4 @@ def traverse_files(folder_path):
 
             order += 1
 
-traverse_files('dataset/ds1/images')
+traverse_files('dataset/ds1/annotation')
