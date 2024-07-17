@@ -1,0 +1,50 @@
+<annotation>
+	<folder>images</folder>
+	<filename>2024-07-16 21-16-18_000141.jpg</filename>
+	<path>C:\Users\zhaoz\Desktop\Human-Body-Detector-and-Auto-Follower-main\dataset\ds1\images\2024-07-16 21-16-18_000141.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>human</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1204</xmin>
+			<ymin>693</ymin>
+			<xmax>1270</xmax>
+			<ymax>839</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>human</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1113</xmin>
+			<ymin>693</ymin>
+			<xmax>1155</xmax>
+			<ymax>796</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>died</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1051</xmin>
+			<ymin>707</ymin>
+			<xmax>1088</xmax>
+			<ymax>814</ymax>
+		</bndbox>
+	</object>
+</annotation>
