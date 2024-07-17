@@ -25,4 +25,17 @@ def traverse_files(folder_path):
 
             order += 1
 
-traverse_files('dataset/ds1/annotation')
+def order_fixer(folder_path):
+    order = 0
+
+    entries = os.listdir(folder_path)
+    entries.sort(key=lambda a: int(a[:get_ps(a, ".")]))
+
+    for file_name in entries:
+        os.rename(folder_path + "\\" + file_name, folder_path + "\\" + str(order) + file_name[get_ps(file_name, "."):])
+
+        order += 1
+
+
+#traverse_files('dataset/ds1/annotation')
+order_fixer('dataset/ds1/images')
