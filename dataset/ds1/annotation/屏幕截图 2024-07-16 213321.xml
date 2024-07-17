@@ -1,0 +1,38 @@
+<annotation>
+	<folder>images</folder>
+	<filename>屏幕截图 2024-07-16 213321.png</filename>
+	<path>C:\Users\zhaoz\Desktop\Human-Body-Detector-and-Auto-Follower-main\dataset\ds1\images\屏幕截图 2024-07-16 213321.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>992</width>
+		<height>718</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>human</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>591</xmin>
+			<ymin>372</ymin>
+			<xmax>662</xmax>
+			<ymax>677</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>human</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>346</xmin>
+			<ymin>400</ymin>
+			<xmax>373</xmax>
+			<ymax>461</ymax>
+		</bndbox>
+	</object>
+</annotation>
