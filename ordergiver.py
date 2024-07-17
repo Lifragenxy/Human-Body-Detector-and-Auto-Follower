@@ -37,5 +37,5 @@ def order_fixer(folder_path):
         order += 1
 
 
-#traverse_files('dataset/ds1/annotation')
-order_fixer('dataset/ds1/images')
+traverse_files('dataset/ds1/images')
+#order_fixer('dataset/ds1/images')
