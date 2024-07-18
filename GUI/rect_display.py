@@ -5,7 +5,8 @@ import time
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDesktopWidget, QPushButton
 from PyQt5.QtGui import QPainter, QColor, QPen, QPixmap
 from PyQt5.QtCore import Qt, QRect, QThread, pyqtSignal
-import roboflowAPI
+#import roboflowAPI
+import yoloAPI
 import copy
 import threading as thr
 
@@ -110,7 +111,7 @@ class FetchThread(QThread):
 
     def run(self) -> None:
         while True:
-            get_rects = roboflowAPI.fetch_results_by_path()
+            get_rects = yoloAPI.fetch_boxes_by_path()
             self.data_fetched.emit(get_rects)
             #time.sleep(1)
 
@@ -119,11 +120,11 @@ def main():
     window = TransparentWindow()
     window.show()
 
-    for i in range(10):
+    for i in range(5):
         fetch_thread = FetchThread()
         fetch_thread.data_fetched.connect(window.redo)
         fetch_thread.start()
-        time.sleep(0.3)
+        time.sleep(0.2)
     sys.exit(app.exec_())
 
 
