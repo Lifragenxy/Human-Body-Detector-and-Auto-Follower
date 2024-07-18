@@ -1,6 +1,6 @@
 # -*- encoding:utf-8 -*-
 # this file contains two parts:
-# 1.process the images of human body in BS
+# 1.process the JPEGImages of human body in BS
 # 2.labelling
 # 3.training done by tensorflow
 import keras

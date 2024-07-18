@@ -6,7 +6,7 @@ def main():
     random.seed(0)  # 设置随机种子，保证随机结果可复现
 
     # 给定数据集Annotation的路径
-    files_path = "./VOCdevkit/VOC2012/Annotations"
+    files_path = "/datasets/ds1/annotations"
     assert os.path.exists(files_path), "path: '{}' does not exist.".format(files_path)
 
     # 验证集的比例
