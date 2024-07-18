@@ -6,6 +6,7 @@ from PyQt5.QtCore import Qt, QRect, QThread, pyqtSignal
 #import roboflowAPI
 import yoloAPI
 import threading as thr
+import pyautogui
 
 # Sample JSON data
 '''
@@ -30,11 +31,19 @@ global rects
 global COLOR_INDEX
 COLOR_INDEX = {"human": "red", "107": "red", "died": "blue", "114": "blue"}
 
+global aimer_flag
+aimer_flag = False
+
+def move_mouse(x, y):
+    pyautogui.moveTo(x, y)
+
+
 class TransparentWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Rectangles Display')
-        self.setGeometry(0, 0, 1920, 1080)
+        self.screen_width, self.screen_height = pyautogui.size()
+        self.setGeometry(0, 0, self.screen_width, self.screen_height)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.rects = []
@@ -97,11 +106,26 @@ class TransparentWindow(QMainWindow):
             i.close()
         self.button_list = []
 
+    def move_cursor(self, rects):
+        if aimer_flag:
+            history_value = self.screen_width + self.screen_height
+            now_index = 0
+            for rect in range(len(rects)):
+                distance = int(abs(self.screen_width//2 - rects[rect]['x']) + abs(self.screen_height//2 - rects[rect]['y']))
+                if distance < history_value:
+                    history_value = distance
+                    now_index = rect
+
+            move_mouse(int(rects[now_index]['x']), int(rects[now_index]['y']))
+
+
     # 窗口总重绘
     def redo(self, rects):
         self.rects = rects
+
         self.closing()
         self.paint_it()
+
 
 
 
@@ -131,11 +155,25 @@ class FetchThread(QThread):
             self.data_fetched.emit(get_rects)
             #time.sleep(1)
 
+class CursorThread(QThread):
+    def run(self) -> None:
+        while True:
+            if pyautogui.rightClick():
+                # 获取鼠标当前位置
+                if aimer_flag:
+                    aimer_flag = False
+                else:
+                    aimer_flag = True
+                time.sleep(0.1)
+
 def main():
     # 主窗口线程，隔离线程防止ai卡顿把主程序带崩
     app = QApplication(sys.argv)
     window = TransparentWindow()
     window.show()
+
+    cursor_thread = CursorThread()
+    cursor_thread.start()
 
     # 通过多创建获取框框信息线程来加快刷新速度
     for i in range(5):
@@ -144,6 +182,7 @@ def main():
         fetch_thread.start()
         time.sleep(0.2)
     sys.exit(app.exec_())
+
 
 
 if __name__ == '__main__':
