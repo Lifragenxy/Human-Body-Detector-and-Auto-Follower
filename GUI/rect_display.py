@@ -1,17 +1,15 @@
 import sys
-import json
 import time
 
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QDesktopWidget, QPushButton
-from PyQt5.QtGui import QPainter, QColor, QPen, QPixmap
 from PyQt5.QtCore import Qt, QRect, QThread, pyqtSignal
 #import roboflowAPI
 import yoloAPI
-import copy
 import threading as thr
 
 # Sample JSON data
-json_data = '''
+'''
+json_data = 
 [
     {"title": "Rectangle 1", "x": 50, "y": 50, "width": 100, "height": 50, "color": "red", "class": "a", "confidence": 0.5},
     {"title": "Rectangle 2", "x": 200, "y": 100, "width": 150, "height": 75, "color": "green", "class": "a", "confidence": 0.5},
@@ -27,9 +25,7 @@ global rects
 #print(rects)
 #rects = copy.deepcopy(roboflowAPI.fetch_results_by_path())
 #print(rects)
-global windowlock, fetchlock
-windowlock = True
-fetchlock = True
+
 
 global COLOR_INDEX
 COLOR_INDEX = {"human": "red", "107": "red", "died": "blue", "114": "blue"}
@@ -54,15 +50,16 @@ class TransparentWindow(QMainWindow):
         self.show()
         self.move(0, 0)
         self.raise_()
-        windowlock = False
 
 
+    # 主窗口居中
     def center(self):
         screen_geometry = QDesktopWidget().availableGeometry()
         window_geometry = self.frameGeometry()
         window_geometry.moveCenter(screen_geometry.center())
         self.move(window_geometry.topLeft())
 
+    # UI绘制
     def paint_it(self):
         # painter.drawPixmap(self.rect(), self.background_image)
         # rects = copy.deepcopy(roboflowAPI.fetch_results_by_path())
@@ -94,11 +91,13 @@ class TransparentWindow(QMainWindow):
             # painter.drawText(x + width // 2 - 10, y - 10, rect['class'] + ' ' + str(rect["confidence"]))
             order += 1
 
+    # 删除旧框框
     def closing(self):
         for i in self.button_list:
             i.close()
         self.button_list = []
 
+    # 窗口总重绘
     def redo(self, rects):
         self.rects = rects
         self.closing()
@@ -107,19 +106,38 @@ class TransparentWindow(QMainWindow):
 
 
 class FetchThread(QThread):
+    # 获取识别框的线程
+
+    # 将获取数据传回主窗口的信号
     data_fetched = pyqtSignal(list)
 
     def run(self) -> None:
         while True:
+            # 调用yoloAPI跑模型，返回一个get_rects识别框JSON数据，结构如下
+            """
+            [                       <- 外层大列表，装的是每一个框的信息
+            {'x': float,            <- 框框中心x绝对坐标（屏幕上）
+             'y': float,            <- 框框中心y绝对坐标
+             'width': float,        <- 框宽
+             'height': float,       <- 框高
+             'confidence': float,   <- 确认概率
+             'class': str           <- 属于什么类型，例：human
+            },
+            ]
+            """
             get_rects = yoloAPI.fetch_boxes_by_path()
+
+            # 发射数据信号给主窗口，让主窗口重绘框框
             self.data_fetched.emit(get_rects)
             #time.sleep(1)
 
 def main():
+    # 主窗口线程，隔离线程防止ai卡顿把主程序带崩
     app = QApplication(sys.argv)
     window = TransparentWindow()
     window.show()
 
+    # 通过多创建获取框框信息线程来加快刷新速度
     for i in range(5):
         fetch_thread = FetchThread()
         fetch_thread.data_fetched.connect(window.redo)
