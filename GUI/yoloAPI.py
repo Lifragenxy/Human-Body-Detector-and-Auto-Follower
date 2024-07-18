@@ -2,7 +2,7 @@ from ultralytics import YOLO
 import screenreader
 
 global model
-model = YOLO("model/best.pt")
+model = YOLO("model/best2.pt")
 
 def fetch_boxes_by_path(path="test.jpg"):
     results = model.predict(screenreader.fetch_screen())

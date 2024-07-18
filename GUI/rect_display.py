@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt, QRect, QThread, pyqtSignal
 import yoloAPI
 import threading as thr
 import pyautogui
+import keyboard
 
 # Sample JSON data
 '''
@@ -157,15 +158,18 @@ class FetchThread(QThread):
 
 class CursorThread(QThread):
     def run(self) -> None:
-        while True:
-            if pyautogui.rightClick():
-                # 获取鼠标当前位置
-                if aimer_flag:
-                    aimer_flag = False
-                else:
-                    aimer_flag = True
-                time.sleep(0.1)
-
+        pass
+        #while True:
+        #    if keyboard.is_pressed('i'):
+        #        # 获取鼠标当前位置
+        #        if aimer_flag:
+        #            aimer_flag = False
+        #        else:
+        #            aimer_flag = True
+        #        while keyboard.is_pressed('i'):
+        #            pass
+        #        time.sleep(0.05)
+#
 def main():
     # 主窗口线程，隔离线程防止ai卡顿把主程序带崩
     app = QApplication(sys.argv)
@@ -180,7 +184,7 @@ def main():
         fetch_thread = FetchThread()
         fetch_thread.data_fetched.connect(window.redo)
         fetch_thread.start()
-        time.sleep(0.2)
+        time.sleep(0.1)
     sys.exit(app.exec_())
 
 
