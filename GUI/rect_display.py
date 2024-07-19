@@ -8,6 +8,7 @@ import yoloAPI
 import threading as thr
 import pyautogui
 import keyboard
+import win32con, win32api
 
 # Sample JSON data
 '''
@@ -33,10 +34,12 @@ global COLOR_INDEX
 COLOR_INDEX = {"human": "red", "107": "red", "died": "blue", "114": "blue"}
 
 global aimer_flag
-aimer_flag = False
+aimer_flag = True
+
 
 def move_mouse(x, y):
-    pyautogui.moveTo(x, y)
+    cx, cy = pyautogui.position()
+    win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, (x-cx), (y-cy))
 
 
 class TransparentWindow(QMainWindow):
@@ -109,21 +112,23 @@ class TransparentWindow(QMainWindow):
 
     def move_cursor(self, rects):
         if aimer_flag:
-            history_value = self.screen_width + self.screen_height
-            now_index = 0
-            for rect in range(len(rects)):
-                distance = int(abs(self.screen_width//2 - rects[rect]['x']) + abs(self.screen_height//2 - rects[rect]['y']))
-                if distance < history_value:
-                    history_value = distance
-                    now_index = rect
+            if rects:
+                history_value = self.screen_width + self.screen_height
+                now_index = 0
+                for rect in range(len(rects)):
+                    distance = int(abs(self.screen_width//2 - rects[rect]['x']) + abs(self.screen_height//2 - rects[rect]['y']))
+                    if distance < history_value:
+                        history_value = distance
+                        now_index = rect
 
-            move_mouse(int(rects[now_index]['x']), int(rects[now_index]['y']))
+                # now_x, now_y = pyautogui.position()
+                move_mouse(int(rects[now_index]['x']), int(rects[now_index]['y']))
 
 
     # 窗口总重绘
     def redo(self, rects):
         self.rects = rects
-
+        self.move_cursor(rects)
         self.closing()
         self.paint_it()
 
@@ -180,11 +185,11 @@ def main():
     cursor_thread.start()
 
     # 通过多创建获取框框信息线程来加快刷新速度
-    for i in range(5):
-        fetch_thread = FetchThread()
-        fetch_thread.data_fetched.connect(window.redo)
-        fetch_thread.start()
-        time.sleep(0.1)
+    #for i in range(10):
+    fetch_thread = FetchThread()
+    fetch_thread.data_fetched.connect(window.redo)
+    fetch_thread.start()
+    #time.sleep(0.05)
     sys.exit(app.exec_())
 
 
